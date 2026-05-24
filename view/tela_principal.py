@@ -1,5 +1,8 @@
+from model.grafico import GraficoEmergetico
 from model.banco import BancoDados
 from model.calculo import CalculoEmergetico
+from model.importador import ImportadorCSV
+
 from PyQt5.QtWidgets import (
     QWidget,
     QLabel,
@@ -10,8 +13,6 @@ from PyQt5.QtWidgets import (
     QFileDialog
 )
 
-from model.importador import ImportadorCSV
-
 
 class TelaPrincipal(QWidget):
 
@@ -21,10 +22,11 @@ class TelaPrincipal(QWidget):
         self.setWindowTitle("Sistema de Cálculo Emergético")
         self.setGeometry(200, 200, 800, 500)
 
-        # Importador
+        # Classes do sistema
         self.importador = ImportadorCSV()
         self.calculo = CalculoEmergetico()
         self.banco = BancoDados()
+        self.grafico = GraficoEmergetico()
 
         # Título
         self.titulo = QLabel("Sistema de Cálculo Emergético")
@@ -40,9 +42,13 @@ class TelaPrincipal(QWidget):
         # Tabela
         self.tabela = QTableWidget()
         self.tabela.setColumnCount(4)
-        self.tabela.setHorizontalHeaderLabels(
-            ["Recurso", "Energia", "Transformidade", "Emergia"]
-        )
+
+        self.tabela.setHorizontalHeaderLabels([
+            "Recurso",
+            "Energia",
+            "Transformidade",
+            "Emergia"
+        ])
 
         # Resultado
         self.resultado = QLabel("Emergia Total: 0")
@@ -78,23 +84,31 @@ class TelaPrincipal(QWidget):
                 self.tabela.setItem(
                     linha,
                     0,
-                    QTableWidgetItem(str(dados.iloc[linha, 0]))
+                    QTableWidgetItem(
+                        str(dados.iloc[linha, 0])
+                    )
                 )
 
                 self.tabela.setItem(
                     linha,
                     1,
-                    QTableWidgetItem(str(dados.iloc[linha, 1]))
+                    QTableWidgetItem(
+                        str(dados.iloc[linha, 1])
+                    )
                 )
 
                 self.tabela.setItem(
                     linha,
                     2,
-                    QTableWidgetItem(str(dados.iloc[linha, 2]))
+                    QTableWidgetItem(
+                        str(dados.iloc[linha, 2])
+                    )
                 )
+
     def calcular_emergia(self):
 
         lista_emergias = []
+        lista_recursos = []
 
         for linha in range(self.tabela.rowCount()):
 
@@ -110,10 +124,12 @@ class TelaPrincipal(QWidget):
                 energia,
                 transformidade
             )
+
             recurso = self.tabela.item(
                 linha,
                 0
             ).text()
+            lista_recursos.append(recurso)
 
             self.banco.salvar_calculo(
                 recurso,
@@ -137,3 +153,7 @@ class TelaPrincipal(QWidget):
         self.resultado.setText(
             f"Emergia Total: {emergia_total} sej"
         )
+        self.grafico.gerar_grafico(
+    lista_recursos,
+    lista_emergias
+)
