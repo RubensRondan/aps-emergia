@@ -1,3 +1,4 @@
+from model.banco import BancoDados
 from model.calculo import CalculoEmergetico
 from PyQt5.QtWidgets import (
     QWidget,
@@ -23,6 +24,7 @@ class TelaPrincipal(QWidget):
         # Importador
         self.importador = ImportadorCSV()
         self.calculo = CalculoEmergetico()
+        self.banco = BancoDados()
 
         # Título
         self.titulo = QLabel("Sistema de Cálculo Emergético")
@@ -107,6 +109,17 @@ class TelaPrincipal(QWidget):
             emergia = self.calculo.calcular_emergia(
                 energia,
                 transformidade
+            )
+            recurso = self.tabela.item(
+                linha,
+                0
+            ).text()
+
+            self.banco.salvar_calculo(
+                recurso,
+                energia,
+                transformidade,
+                emergia
             )
 
             lista_emergias.append(emergia)
