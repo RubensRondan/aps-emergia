@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QFont
 from model.relatorio import RelatorioPDF
 from model.grafico import GraficoEmergetico
 from model.banco import BancoDados
@@ -32,10 +33,33 @@ class TelaPrincipal(QWidget):
 
         # Título
         self.titulo = QLabel("Sistema de Cálculo Emergético")
+        self.titulo.setFont(
+    QFont("Arial", 18, QFont.Bold)
+)
 
         # Botões
         self.botao_importar = QPushButton("Importar CSV")
         self.botao_calcular = QPushButton("Calcular Emergia")
+        self.botao_pdf = QPushButton("Gerar Relatório PDF")
+        self.botao_importar.setMinimumHeight(40)
+        self.botao_calcular.setMinimumHeight(40)
+        self.botao_pdf.setMinimumHeight(40)
+        estilo_botao = """
+    QPushButton {
+        background-color: #2E86DE;
+        color: white;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #1B4F72;
+    }
+"""
+        self.botao_importar.setStyleSheet(estilo_botao)
+        self.botao_calcular.setStyleSheet(estilo_botao)
+        self.botao_pdf.setStyleSheet(estilo_botao)
         self.botao_pdf = QPushButton(
     "Gerar Relatório PDF"
 )
@@ -49,6 +73,21 @@ class TelaPrincipal(QWidget):
 
         # Tabela
         self.tabela = QTableWidget()
+        self.tabela.setStyleSheet("""
+    QTableWidget {
+        background-color: white;
+        gridline-color: #dcdde1;
+        font-size: 13px;
+    }
+
+    QHeaderView::section {
+        background-color: #2E86DE;
+        color: white;
+        padding: 5px;
+        border: none;
+        font-weight: bold;
+    }
+""")
         self.tabela.setColumnCount(4)
 
         self.tabela.setHorizontalHeaderLabels([
@@ -60,9 +99,24 @@ class TelaPrincipal(QWidget):
 
         # Resultado
         self.resultado = QLabel("Emergia Total: 0")
+        self.resultado.setFont(
+    QFont("Arial", 14, QFont.Bold)
+)
+        self.setStyleSheet("""
+    QWidget {
+        background-color: #f5f6fa;
+    }
+""")
 
         # Layout
         layout = QVBoxLayout()
+        layout.setSpacing(15)
+        layout.setContentsMargins(
+    20,
+    20,
+    20,
+    20
+)
 
         layout.addWidget(self.titulo)
         layout.addWidget(self.botao_importar)
