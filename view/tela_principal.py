@@ -1,3 +1,4 @@
+from model.relatorio import RelatorioPDF
 from model.grafico import GraficoEmergetico
 from model.banco import BancoDados
 from model.calculo import CalculoEmergetico
@@ -27,6 +28,7 @@ class TelaPrincipal(QWidget):
         self.calculo = CalculoEmergetico()
         self.banco = BancoDados()
         self.grafico = GraficoEmergetico()
+        self.relatorio = RelatorioPDF()
 
         # Título
         self.titulo = QLabel("Sistema de Cálculo Emergético")
@@ -34,10 +36,16 @@ class TelaPrincipal(QWidget):
         # Botões
         self.botao_importar = QPushButton("Importar CSV")
         self.botao_calcular = QPushButton("Calcular Emergia")
+        self.botao_pdf = QPushButton(
+    "Gerar Relatório PDF"
+)
 
         # Eventos
         self.botao_importar.clicked.connect(self.importar_csv)
         self.botao_calcular.clicked.connect(self.calcular_emergia)
+        self.botao_pdf.clicked.connect(
+    self.gerar_relatorio
+)
 
         # Tabela
         self.tabela = QTableWidget()
@@ -60,6 +68,7 @@ class TelaPrincipal(QWidget):
         layout.addWidget(self.botao_importar)
         layout.addWidget(self.tabela)
         layout.addWidget(self.botao_calcular)
+        layout.addWidget(self.botao_pdf)
         layout.addWidget(self.resultado)
 
         self.setLayout(layout)
@@ -157,3 +166,51 @@ class TelaPrincipal(QWidget):
     lista_recursos,
     lista_emergias
 )
+    def gerar_relatorio(self):
+
+        recursos = []
+        energias = []
+        transformidades = []
+        emergias = []
+
+        for linha in range(
+            self.tabela.rowCount()
+        ):
+
+            item_recurso = self.tabela.item(linha, 0)
+            item_energia = self.tabela.item(linha, 1)
+            item_transformidade = self.tabela.item(linha, 2)
+            item_emergia = self.tabela.item(linha, 3)
+
+            if (
+                item_recurso is not None and
+                item_energia is not None and
+                item_transformidade is not None and
+                item_emergia is not None
+            ):
+
+                recursos.append(
+                    item_recurso.text()
+                )
+
+                energias.append(
+                    item_energia.text()
+                )
+
+                transformidades.append(
+                    item_transformidade.text()
+                )
+
+                emergias.append(
+                    item_emergia.text()
+                )
+
+        emergia_total = self.resultado.text()
+
+        self.relatorio.gerar(
+            recursos,
+            energias,
+            transformidades,
+            emergias,
+            emergia_total
+        )
