@@ -1,6 +1,18 @@
 # Sistema de Cálculo Emergético
 
-Sistema desenvolvido em Python para realização de cálculos emergéticos simplificados aplicados à análise ambiental.
+## Sobre o Projeto
+
+Sistema desenvolvido em Python para automatizar cálculos emergéticos aplicados à análise ambiental.
+
+Permite importar dados CSV, realizar cálculos, gerar gráficos e emitir relatórios PDF.
+
+---
+
+## Interface
+
+![Tela Principal](imagens/tela-principal.png)
+
+---
 
 ## Funcionalidades
 
@@ -9,6 +21,8 @@ Sistema desenvolvido em Python para realização de cálculos emergéticos simpl
 - Geração de gráficos
 - Relatórios PDF
 - Banco SQLite
+
+---
 
 ## Tecnologias
 
